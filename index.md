@@ -12,14 +12,13 @@ Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [sophi
 (coming soon) Paper PDF, ACM DL (open-access) | (coming soon) Pre-print PDF
 
 ## Projects
-* Selected projects
-- Exploring Industry Standard System Integration for Hardware-Software Co-Design of PCI Express (CS 262A Fall 2022)[Paper](https://people.eecs.berkeley.edu/~kubitron/courses/cs262a-F22/projects/reports/project5_report_ver2.pdf)[Poster](https://people.eecs.berkeley.edu/~kubitron/courses/cs262a-F22/projects/reports/project5_poster.pdf)
+- Exploring Industry Standard System Integration for Hardware-Software Co-Design of PCI Express (CS 262A Fall 2022) [Paper](https://people.eecs.berkeley.edu/~kubitron/courses/cs262a-F22/projects/reports/project5_report_ver2.pdf) [Poster](https://people.eecs.berkeley.edu/~kubitron/courses/cs262a-F22/projects/reports/project5_poster.pdf)
 - Building a memory traffic generator to profile memory hierarchies of RISC-V SoCs [MemPress](https://github.com/ucb-bar/mempress)
 
 ## Teaching
 * While I was in Seoul National University
 - [**430.315A: Digital Systems Design and Experiments**]
-- [**430.322: Computer Organization]
+- [**430.322: Computer Organization**]
   
 ## Misc
-Want to see a minimalistic Chisel example? Go checkout my Chisel-based priority queue! [Chisel-Priority-Queue](https://github.com/joey0320/chisel-priorityqueue)
+**Want to see a minimalistic Chisel example? Go checkout my Chisel-based priority queue!**  [Chisel-Priority-Queue](https://github.com/joey0320/chisel-priorityqueue)
