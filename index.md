@@ -4,6 +4,10 @@
 
 Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [sophia shao](https://people.eecs.berkeley.edu/~ysshao/) and [krste asanović](https://people.eecs.berkeley.edu/~krste/). I'm interested in warehouse-scale computing and developing tools for computer architecture research. I'm currently working on the [FireSim](https://fires.im/) project.
 
+## Articles
+[Is accelerator research really worth it?](./articles/research-on-domain-specific-architectures.md)
+
+
 ## Publications
 * Sagar Karandikar, Aniruddha N. Udipi, Junsun Choi, **Joonho Whangbo**, Jerry Zhao, Svilen Kanev, Edwin Lim, Jyrki Alakuijala, Vrishab Madduri, Yakun Sophia Shao, Borivoje Nikolić, Krste Asanović, and Parthasarathy Ranganathan, **“CDPU: Co-designing Compression and Decompression Processing Units for Hyperscale Systems”**, To appear, In Proceedings of the 50th ACM/IEEE International Symposium on Computer Architecture (ISCA 2023), Orlando, FL, USA, June 2023.
 (coming soon) Paper PDF, ACM DL (open-access) | (coming soon) Pre-print PDF
