@@ -1,6 +1,6 @@
 # Joonho Whangbo
 
-[[Github](https://github.com/joey0320)]
+[[Github](https://github.com/joonho3020)]
 
 Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [sophia shao](https://people.eecs.berkeley.edu/~ysshao/) and [krste asanović](https://people.eecs.berkeley.edu/~krste/). I'm interested in warehouse-scale computing and developing tools for computer architecture research. I'm currently working on the [FireSim](https://fires.im/) project.
 
