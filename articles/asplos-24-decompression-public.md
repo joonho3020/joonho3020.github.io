@@ -53,7 +53,7 @@
     - Simulation techniques (better sampling, cluster, embedding, end to end metric awareness)
     - Performance analysis (profiling, bottleneck analysis, come up with ways of filtering out useful info from mundane ones)
     - And rethink the agile design methodology altogether
-- I've heard about people (Jerry and Vighnesh) say this before, but it was a bit different to actually see for myself
+<!-- - I've heard about people (Jerry and Vighnesh) say this before, but it was a bit different to actually see for myself -->
 
 ## LATTE
 
