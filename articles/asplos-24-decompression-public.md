@@ -53,7 +53,6 @@
     - Simulation techniques (better sampling, cluster, embedding, end to end metric awareness)
     - Performance analysis (profiling, bottleneck analysis, come up with ways of filtering out useful info from mundane ones)
     - And rethink the agile design methodology altogether
-<!-- - I've heard about people (Jerry and Vighnesh) say this before, but it was a bit different to actually see for myself -->
 
 ## LATTE
 
@@ -67,7 +66,6 @@
 ### Discussion w/ Jose Renau
 - Q : Plans to incorporate the LiveHD repo into a SoC design framework?
     - A: Have to perform some code cleanup because it isn't 100% stable. Maybe 98% stable, but need some more polishing for it to be actually used.
-<!-- - A: Can't get students to work on this because it is hard to publish. -->
 - Q: Plans to extend incremental synth to incremental PnR?
     - A: Hacking yosys is kind of difficult. Bugs might pop up here and there because the open source flows aren't that stable. Also hard to get papers for students.
 - Q: Why can't tools predict critical paths and just tell the users instead of pushing through?
@@ -79,13 +77,9 @@
 - Q: IR implementation details? Where are the speedups comming from vs CIRCT?
     - Parallelism : topological/hierarchical parallelism which is managed by the compiler framework. Not much perf benefit for passes that have cross-module ref. Maybe we can remove the notion of modules altogether?
     - Locality : Most nodes can fit in a single cacheline with its neighboring nodes (RTL graph has a limited number of fanouts: makes sense because you don't want high fanout wires everywhere in your design)
-<!-- - Some more discussions about his recent projects which I will keep a secret :) -->
-<!-- - I really liked talking to Jose. Wish he was a PI in Berkeley. -->
 
 ### Some other talks
-<!-- - Accelerator Zoo : Seems like Chipyard is what you want. What are you asking for? -->
 - Memory consistency thing : Didn't really get the point. If you have a ISA, you know your MCM before starting implementation. I think what could be done with this DSL is define valid transactions given a MCM spec, and use it to generated runtime assertions. However, wasn't sure if the language supported transactions like speculative loads.
-<!-- - Non newtonian : some fault tolerance argument. Doesn't make any sense. Why are you even doing this? -->
 - Mojo : python frontend for CIRCT. Can call C-python to run python code or call into their native interpreter for their custom DSL that abstracts away CIRCT primitives. Exposes APIs to the user so that they can focus on making better scheduling decisions which enables them to generate code that outperforms hand written kernels. 
 - Stanford CGRA stuff 
     - cute trick to add/remove pipeline registers in CGRAs. Works because they know the CGRA architecture.
