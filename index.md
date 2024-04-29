@@ -5,8 +5,8 @@
 Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [krste asanović](https://people.eecs.berkeley.edu/~krste/) and [sophia shao](https://people.eecs.berkeley.edu/~ysshao/) . I'm interested in warehouse-scale computing and developing tools for computer architecture research. I'm currently working on the [FireSim](https://fires.im/) project.
 
 ## Articles
-[Is accelerator research really worth it?](./articles/research-on-domain-specific-architectures.md)
-[ASPLOS decompression 2024](./articles/asplos-24-decompression-public.md)
+* [Is accelerator research really worth it?](./articles/research-on-domain-specific-architectures.md)
+* [ASPLOS decompression 2024](./articles/asplos-24-decompression-public.md)
 
 
 ## Publications
