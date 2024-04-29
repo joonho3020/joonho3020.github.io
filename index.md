@@ -6,6 +6,7 @@ Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [krste
 
 ## Articles
 [Is accelerator research really worth it?](./articles/research-on-domain-specific-architectures.md)
+[ASPLOS decompression 2024](./articles/asplos-24-decompression-public.md)
 
 
 ## Publications
