@@ -1,8 +1,8 @@
 # ASPLOS 2024 Notes
 
-## XiangShang tutorial
+## XiangShan tutorial
 
-### XiangShang infrastructure
+### XiangShan infrastructure
 - They had some cool/interesting features and tools built around their infrastructure which was quite impressive
 - difftest
     - They run a functional simulation (in house) alongside RTL simulation to check for functionality
