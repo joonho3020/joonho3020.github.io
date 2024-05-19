@@ -10,7 +10,8 @@ Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [krste
 
 
 ## Publications
-* **Joonho Whangbo**, Edwin Lim, Chengyi Lux Zhang, Kevin Anderson, Abraham Gonzalez, Raghav Gupta, Nivedha Krishnakumar, Sagar Karandikar, Borivoje Nikolić, Yakun Sophia Shao, and Krste Asanović, **"FireAxe: Partitioned FPGA-Accelerated Simulation of Large-Scale RTL Designs"**, To appear, In Proceedings of the 51th ACM/IEEE International Symposium on Computer Architecture (ISCA 2024), Buenos Aires, Argentina, June 2024. (coming soon) 
+* **Joonho Whangbo**, Edwin Lim, Chengyi Lux Zhang, Kevin Anderson, Abraham Gonzalez, Raghav Gupta, Nivedha Krishnakumar, Sagar Karandikar, Borivoje Nikolić, Yakun Sophia Shao, and Krste Asanović, **"FireAxe: Partitioned FPGA-Accelerated Simulation of Large-Scale RTL Designs"**, To appear, In Proceedings of the 51th ACM/IEEE International Symposium on Computer Architecture (ISCA 2024), Buenos Aires, Argentina, June 2024. 
+Paper PDF [FireAxe](./assets/ISCA2024-FireAxe.pdf)
 
 * Sagar Karandikar, Aniruddha N. Udipi, Junsun Choi, **Joonho Whangbo**, Jerry Zhao, Svilen Kanev, Edwin Lim, Jyrki Alakuijala, Vrishab Madduri, Yakun Sophia Shao, Borivoje Nikolić, Krste Asanović, and Parthasarathy Ranganathan, **“CDPU: Co-designing Compression and Decompression Processing Units for Hyperscale Systems”**, In Proceedings of the 50th ACM/IEEE International Symposium on Computer Architecture (ISCA 2023), Orlando, FL, USA, June 2023.
 Paper PDF, ACM DL (open-access) | [CDPU](https://dl.acm.org/doi/abs/10.1145/3579371.3589074)
