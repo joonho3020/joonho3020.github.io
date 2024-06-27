@@ -2,7 +2,9 @@
 
 [[Github](https://github.com/joonho3020)]
 
-Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [krste asanović](https://people.eecs.berkeley.edu/~krste/) and [sophia shao](https://people.eecs.berkeley.edu/~ysshao/) . I'm interested in warehouse-scale computing and developing tools for computer architecture research. I'm currently working on the [FireSim](https://fires.im/) project.
+Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [krste asanović](https://people.eecs.berkeley.edu/~krste/).
+I'm interested in developing tools for computer architecture research (RTL simulation and HDL design).
+I'm currently working on the [FireSim](https://fires.im/) project.
 
 ## Articles
 * [Is accelerator research really worth it?](./articles/research-on-domain-specific-architectures.md)
@@ -27,6 +29,6 @@ Paper PDF, ACM DL (open-access) | [NeuRex](https://dl.acm.org/doi/abs/10.1145/35
 * While I was in Seoul National University
 - [**430.315A: Digital Systems Design and Experiments**]
 - [**430.322: Computer Organization**]
-  
+
 ## Misc
 **Want to see a minimalistic Chisel example? Go checkout my Chisel-based priority queue!**  [Chisel-Priority-Queue](https://github.com/joey0320/chisel-priorityqueue)
