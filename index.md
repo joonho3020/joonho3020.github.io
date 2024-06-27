@@ -2,7 +2,7 @@
 
 [[Github](https://github.com/joonho3020)]
 
-Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, co-advised by [krste asanović](https://people.eecs.berkeley.edu/~krste/).
+Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, advised by [krste asanović](https://people.eecs.berkeley.edu/~krste/).
 I'm interested in developing tools for computer architecture research (RTL simulation and HDL design).
 I'm currently working on the [FireSim](https://fires.im/) project.
 
