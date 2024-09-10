@@ -148,11 +148,11 @@ XLS also offers some strong features in terms of generic tooling.
 
 ## XLS pitfalls
 
-There are a few poor design decisions that render XLS useless. Let’s take a look at each one.
+There are a few poor design decisions in XLS. Let’s take a look at each one.
 
 ### Abstraction is all that matters
 
-The biggest problem with XLS is that the abstraction on which this language is built is fundamentally “wrong” [^1]. Traditional HLS tools (e.g., Catapult or SystemC) have a significant advantage over hand-written RTL by allowing developers to work at higher levels of abstraction. These tools typically support control flow synthesis, freeing designers from having to reason about the control path on a cycle-by-cycle, bit-by-bit basis. Automating this process alleviates a huge burden, as debugging control flow is where hardware designers spend much of their time.
+The biggest problem with XLS is that the abstraction on which this language is built is fundamentally “wrong”. Traditional HLS tools (e.g., Catapult or SystemC) have a significant advantage over hand-written RTL by allowing developers to work at higher levels of abstraction. These tools typically support control flow synthesis, freeing designers from having to reason about the control path on a cycle-by-cycle, bit-by-bit basis. Automating this process alleviates a huge burden, as debugging control flow is where hardware designers spend much of their time.
 
 However, XLS sets its abstraction boundary by not supporting control flow synthesis. This means that if you have a complex FSM (Finite State Machine) to implement, you cannot describe the circuit in an imperative-style language and rely on the compiler to synthesize the control logic. Instead, you must explicitly instantiate all the hardware state required to control the FSM and manually ensure it behaves as expected.
 
@@ -210,7 +210,7 @@ proc GCD<N: u32> {
 }
 ```
 
-One abstraction that XLS does provide is communication channels, which are essentially latency-insensitive ports. By abstracting away these constructs, XLS helps avoid backpressure bugs by design [^2]. However, logic synthesis for latency-insensitive interfaces is not as beneficial as having control flow synthesis. For example, if bus responses arrive out of order, it remains the designer’s responsibility to manually write the control logic to handle the responses correctly.
+One abstraction that XLS does provide is communication channels, which are essentially latency-insensitive ports. By abstracting away these constructs, XLS helps avoid backpressure bugs by design [^1]. However, logic synthesis for latency-insensitive interfaces is not as beneficial as having control flow synthesis. For example, if bus responses arrive out of order, it remains the designer’s responsibility to manually write the control logic to handle the responses correctly.
 
 Moreover, there are cases where designers need to use ports that are not latency-insensitive but require combinational feedback paths (e.g., priority encoders). Expressing this type of logic using XLS channels is challenging. Designers are then forced to write suboptimal blocks that waste cycles performing ready-valid handshakes when combinational logic could suffice.
 
@@ -300,8 +300,7 @@ Overall, I don’t think XLS is suitable for initial prototyping of designs, let
 Nevertheless, I appreciate their effort in building a new hardware design language from scratch and exploring new abstractions. Integrating software techniques into hardware design is a valuable area for research and has the potential to unlock new possibilities. Admittedly, this is a challenging field that requires expertise in both hardware design and programming languages. We should learn from past mistakes and aim to do better next time. There is always room for improvement when developing tools.
 
 
-[^1]: The definition of "correct" abstraction boundaries can differ from situation to situation. But in this case, it is simply wrong in all cases.
-[^2]: Technically, backpressure bugs can still happen but I'm just trying to be nice here.
+[^1]: Technically, backpressure bugs can still happen.
 
 ---
 
