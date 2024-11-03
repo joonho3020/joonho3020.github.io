@@ -10,6 +10,7 @@ I'm currently working on the [FireSim](https://fires.im/) project.
 * [Is accelerator research really worth it?](./articles/research-on-domain-specific-architectures.md)
 * [ASPLOS decompression 2024](./articles/asplos-24-decompression-public.md)
 * [XLS - Google's open-source HLS tool](./articles/xls-article.md)
+* [Micro CAMS workshop 2024](./articles/micro-24-cams-workshop.md)
 
 
 ## Publications
