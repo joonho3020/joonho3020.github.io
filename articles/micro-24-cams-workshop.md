@@ -6,7 +6,7 @@ I recognized a few people like Trevor Carlson and Jason Lowepower.
 ## Morning section
 
 The first presentation, which I was late to, was about an LLM accelerator modeling framework.
-It was compared against LLM Compass, another model similar to TimeLoop.
+It was compared against LLM Compass[^1], another model similar to TimeLoop.
 Not too interesting.
 
 The next presentation was about using ML for bottleneck analysis, and the motivation behind it was somewhat funny.
@@ -39,7 +39,7 @@ The highlight was their "Novoverse" models, which are "known good configurations
 However, instead of redesigning the microarchitecture model, it seemed like they just fiddled with the configuration parameters to match the performance counter values.
 Jason straight up said they don't have an OoO core model with a decoupled frontend (maybe the Gem5 people are too busy to write this "model").
 So I can only assume that they are changing things like the integer adder latency (which obviously should be combinational) just to "match the numbers".
-It was quite ironic because Jason called out certain simulators as being a "random number generator", but to me, Gem5 seems no different.
+It was quite ironic because Jason called out certain simulators as being a "random number generator", but to me, Gem5 seems no different [^2].
 
 Then Trevor gave some updates on Sniper.
 The main new feature was that it integrated some ML libraries so that you can use ML for exploring branch predictors.
@@ -48,7 +48,7 @@ To me, it looked like he was trying to lure innocent children by waving a big lo
 He also gave some of his thoughts on the future of simulation.
 The TLDR was that we need to work on specialized frameworks that suit different user needs.
 The correct approach here is to provide a new abstraction as a library so that users can build a new simulator suitable for their use.
-Just like DAM [^1] :).
+Just like DAM [^3] :).
 
 Then Yifan gave a presentation about Akit which is an event-driven simulation framework written in Go.
 I thought it was trying to do something similar to DAM, but it was just a generic event-driven simulation framework that runs on a single thread.
@@ -56,4 +56,21 @@ Even if using coroutines for the CPU modeling part makes little sense (you have 
 
 Finally, the SST guy presented some stuff, but the features that were presented were quite vanilla and it became hard to focus.
 
-[^1]: N. Zhang et al., "The Dataflow Abstract Machine Simulator Framework," 2024 ACM/IEEE 51st Annual International Symposium on Computer Architecture (ISCA), Buenos Aires, Argentina, 2024, pp. 532-547, doi: 10.1109/ISCA59077.2024.00046. keywords: {Tensors;Machine learning algorithms;Dams;Large language models;Memory management;Machine learning;Parallel processing;Parallel Discrete Event Simulation;Dataflow Accelerators;Modeling},
+## Conclusion
+
+I think the workshop was quite entertaining compared to other stuff (maybe I should start writing an article about all the research areas that I don't like in computer architecture).
+I think the big challenge of all these simulation frameworks is that they are not validated properly and have no error bounds.
+Without error bounds, studies that are built on top of it (e.g. sampling techniques, uarch changes, etc) will also have unbound errors (or in easier words, "hard to believe").
+As far as I know, models used in industry are correleated directly with their silicon by extracting information out of the taped out chips (or even just in RTL simulation).
+This provides them the ability to model the microarchitectural behaviors faithfully instead of just trying to match the final performance counter statistics.
+However, all these academic simulators are just built without any particular microarchitecture in mind or was built a very long time ago and does not model modern CPU designs.
+Hence, even if they correlate some end to end performance counter values with silicon, the underlying behavior of the model will be fundamentally different from what you will exepct in the silicon.
+I think it is completely doable to perform correlation with open source RTL implementations, but it would require the modeling people to rewrite a lot of their models.
+Perhaps the better option is to rethink how we write models by building a generic library that helps people build fast, easy to use simulators that can be easily validated against open source RTL implementations.
+
+---
+
+
+[^1]: https://arxiv.org/abs/2312.03134
+[^2]: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8718630
+[^3]: N. Zhang et al., "The Dataflow Abstract Machine Simulator Framework," 2024 ACM/IEEE 51st Annual International Symposium on Computer Architecture (ISCA), Buenos Aires, Argentina, 2024, pp. 532-547, doi: 10.1109/ISCA59077.2024.00046. keywords: {Tensors;Machine learning algorithms;Dams;Large language models;Memory management;Machine learning;Parallel processing;Parallel Discrete Event Simulation;Dataflow Accelerators;Modeling},
