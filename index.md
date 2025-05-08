@@ -11,7 +11,7 @@ I'm currently working on the [FireSim](https://fires.im/) project.
 * [ASPLOS decompression 2024](./articles/asplos-24-decompression-public.md)
 * [XLS - Google's open-source HLS tool](./articles/xls-article.md)
 * [Micro CAMS workshop 2024](./articles/micro-24-cams-workshop.md)
-* [Research vision for ME commons](./articles/me-commons.md)
+* [How RTL Simulation Works](./articles/rtl-simulation.md)
 
 ## Publications
 * **Joonho Whangbo**, Edwin Lim, Chengyi Lux Zhang, Kevin Anderson, Abraham Gonzalez, Raghav Gupta, Nivedha Krishnakumar, Sagar Karandikar, Borivoje Nikolić, Yakun Sophia Shao, and Krste Asanović, **"FireAxe: Partitioned FPGA-Accelerated Simulation of Large-Scale RTL Designs"**, To appear, In Proceedings of the 51th ACM/IEEE International Symposium on Computer Architecture (ISCA 2024), Buenos Aires, Argentina, June 2024. 
