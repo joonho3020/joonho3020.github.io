@@ -1,22 +1,23 @@
 # RTL Simulation
 
-RTL simulation is the workhorse for digital design.
-Lets cover how RTL simulators like VCS or Verilator work under the hood.
+RTL simulation is the workhorse of digital design.
+Lets cover how RTL simulators like **VCS** or **Verilator** work under the hood.
 
 ## What is RTL
 
-RTL stands for register transfer level.
-In RTL, there are three components.
-First, there are the registers which contains some state of the circuit for a cycle.
-Next, logic (a.k.a combinational logic) is some circuitry that performs some sort of computation within a cycle.
-Finally, there are the wires that carries a value of a bit from one place to another.
+RTL stands for *Register Transfer Level*.
+At RTL, there are three components:
+
+1. Registers – These store the state of the circuit across cycles.
+2. Combinational logic – This computes outputs from inputs within a single cycle.
+3. Wires – These carry signals (bits) between components.
 
 <div style="text-align:center; margin: 1em 0;">
   <img src="./assets/rtl-example.svg" width="300">
 </div>
 
-In the example, there are two registers driving the adder (combinational logic) that feeds back to a input register.
-The output of the adder will be updated in the register at the next positive/negative clk edge.
+In the example, two registers drive an adder (combinational logic) whose output feeds into the input register.
+The adder's result is latched (updated) into the register on the next pos/neg clock edge.
 
 ---
 
@@ -27,16 +28,16 @@ Hence, I'll be omitting the clock signal in the diagrams.
 
 ### Single Level of Sequential Logic
 
-To simplify things even further, lets consider a single level of sequential logic: registers to the outputs of the combinational logic that they are driving.
-In this scenario, the circuit can be represented as a directed acyclic graph as cycles between combinational logic is prohibited in digital design.
+To simplify things even further, lets consider a *single level of sequential logic*: registers feeding into combinational logic, which then drives outputs or other registers.
+Such circuits form a directed acyclic graph (DAG) because combinational loops are not allowed.
 
 <div style="text-align:center; margin: 1em 0;">
   <img src="./assets/levelization.svg" width="500">
 </div>
 
-The first step to simulating a single level of sequential logic is to "levelize" it (a.k.a topological sort).
+The first step to simulating a single level of sequential logic is to **levelize** it (a.k.a topological sort).
 
-- Registers and external inputs are placed at level 0
+- Registers and external inputs are placed at **level 0**
 - The level of a logic element is represented by: `my_level = max(child[0].level, child[1].level, ...) + 1`
     - `Level(A) = max(0, 0) + 1`
     - `Level(C) = max(Level(A), Level(B)) + 1 = max(1, 1) + 1`
@@ -55,10 +56,10 @@ The next step is to propagate the signals level by level.
 As you can see, if we propagate the signals level by level, we are guaranteed that we have updated the output values of all the child nodes of the current node.
 Hence, we never have to worry about using stale values when executing the logic function.
 
-### Sequential Logic with Multiple Levels
+### Multiple Levels of Sequential Logic
 
-Finally, lets consider the case when there are multiple levels of sequential logic. Note that now we can have cycles in the graph as well.
-However, there must be at least one register in a cycle.
+Now consider circuits with multiple register stages.
+These may contain cycles, but every cycle must pass through at least one register.
 
 <div style="text-align:center; margin: 1em 0;">
   <img src="./assets/multi-level-seq.svg" width="700">
@@ -78,9 +79,9 @@ We just simulated a single cycle of the entire circuit.
 ## Event Driven RTL Simulation
 
 Now lets look at how event-driven RTL simulation works.
-In an event-driven RTL simulation framework, an event happens when the value of an element changes compared to the previous cycle.
-These events are queued up in some priority queue and scheduled for execution.
-Hence, we can skip evaluating parts of the circuit that stays the same with respect to the previous cycle.
+In an event-driven RTL simulation framework, an event happens when the value of a signal changes compared to the previous cycle.
+These events are queued up in a priority queue and scheduled dynamically.
+This allows the simulator to skip evaluating unchanged parts of the circuit, saving time.
 
 <div style="text-align:center; margin: 1em 0;">
   <img src="./assets/event-driven.svg" width="500">
