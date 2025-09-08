@@ -51,6 +51,11 @@ If you are an undergrad (or early stage grad student) in UC Berkeley and interes
     - Good for building a strong understanding of OoO execution
     - Feed in traces from functional simulator (rusty-spike) into this performance model (probably use rust???)
     - Could work as a steppingstone for investigating a systematic RTL/model correlation approach via event annotations
+- Building benchmarks for web applications
+    - Cross compilation into RISC-V works well for Golang so searching/porting them to RISC-V and running them on Spike, FireSim would be super cool
+    - Combine this with profiling and I'm sure you will find interesting events happening
+    - Push request rate until response latency surges. Precisely describe why
+    - How do modern OoO cores react to highly concurrent applications?
 
 ## Ideas & Open Ended Projects
 
