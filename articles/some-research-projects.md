@@ -24,9 +24,10 @@ If you are an undergrad (or early stage grad student) in UC Berkeley and interes
         - [shadow-stack for go](https://blog.felixge.de/blazingly-fast-shadow-stacks-for-go/)
         - [redhat, stack unwinding overhead is a trap for sampling based profilers](https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/auth?client_id=rhd-web&redirect_uri=https%3A%2F%2Fdevelopers.redhat.com%2Farticles%2F2024%2F10%2F30%2Flimitations-frame-pointer-unwinding&state=44f7dca1-43a0-40c5-b1f4-84348aa7dd67&response_mode=fragment&response_type=code&scope=openid%20api.dxp_portals.developers&nonce=5d857d94-4b4d-4c3d-99b5-5b6b951566a7&prompt=none&code_challenge=seDrE632essMAuVdjckKFFZgiZG4AAFgYQLVpgW_A24&code_challenge_method=S256)
     - Motivation is to reduce profiling perturbation via adding hardware support for stack unwinding
-    - Step zero would be to understand how linux perf works under the hood by heart
-    - Next step is to implement this in spike & linux
-    - Final step would be to implement this in RTL, but this can be painful and would involve using firesim. this can be a stretch goal
+        - Step zero would be to understand how linux perf works under the hood by heart
+        - Next step is to implement this in spike & linux
+        - Final step would be to implement this in RTL, but this can be painful and would involve using firesim. this can be a stretch goal
+    - [Detailed project description here](./shadow-stack-profiler.md)
 - Building a hardware module for SoC event tracking
     - [Profiling hello world](https://queue.acm.org/detail.cfm?id=3291278)
         - First and foremost, you must see to understand and optimize. Otherwise you will be mislead into investigating irrelevant things (i.e., the streetlight effect where you are searching under the streetlight, not actually where your missing keys are!)

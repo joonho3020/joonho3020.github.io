@@ -16,6 +16,7 @@ I'm currently working on the [FireSim](https://fires.im/) project.
 ## Research Projects
 
 * [Undergrad (or early stage grad) research projects](./articles/some-research-projects.md)
+* [Using RISC-V Shadow Stack ISA Extensions for SW Profiling](./articles/shadow-stack-profiler.md)
 
 ## Publications
 * **Joonho Whangbo**, Edwin Lim, Chengyi Lux Zhang, Kevin Anderson, Abraham Gonzalez, Raghav Gupta, Nivedha Krishnakumar, Sagar Karandikar, Borivoje Nikolić, Yakun Sophia Shao, and Krste Asanović, **"FireAxe: Partitioned FPGA-Accelerated Simulation of Large-Scale RTL Designs"**, To appear, In Proceedings of the 51th ACM/IEEE International Symposium on Computer Architecture (ISCA 2024), Buenos Aires, Argentina, June 2024. 
