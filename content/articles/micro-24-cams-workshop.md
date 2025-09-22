@@ -1,5 +1,10 @@
-# CAMs workshop
++++
+title = "CAMs workshop"
+date = "2024-11-03"
 
+[extra]
+toc = true
++++
 I ran from the Chipyard/FireSim tutorial (I wasn't presenting in the morning) to attend the computer architecture modeling and simulation ([CAMS](https://sarchlab.org/cams24)) workshop.
 I recognized a few people like Trevor Carlson and Jason Lowepower.
 

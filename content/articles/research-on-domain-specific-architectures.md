@@ -1,6 +1,10 @@
++++
+title = "Research on Domain Specific Architectures. Are they really worth it in academia?"
+date = "2023-07-12"
 
-# Research on Domain Specific Architectures. Are they really worth it in academia?
-
+[extra]
+toc = true
++++
 If you are working on something that is even tangentially related to VLSI or computer architecture, you probably saw an article starting with "Due to the end of Moore's Law...". And yes, the Moore's law has ended, and we as computer scientists need to come up with innovative ways to squeeze performance. For the past 10 years, a lot of this was achieved by specialization. For computer architects, this boiled down to building accelerators. I think it is a good time to reflect back on time and see what we have achieved, and what we should work on going forward.
 
 

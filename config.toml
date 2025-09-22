@@ -1,0 +1,25 @@
+base_url = "https://joonho3020.github.io"
+compile_sass = true
+minify_html = true
+build_search_index = true
+
+theme = "anemone"
+
+# Site metadata
+title = "Joonho Whangbo"
+description = "Ph.D. student in Computer Science at UC Berkeley"
+
+# Taxonomies
+# You can enable tags later if desired
+# taxonomies = [ { name = "tags" } ]
+
+[extra]
+# List articles on the homepage via theme support
+list_pages = false
+# Optional: show author on posts
+display_author = true
+# Optional header nav
+header_nav = [
+  { url = "/", name_en = "home" },
+  { url = "/articles/", name_en = "articles" },
+]

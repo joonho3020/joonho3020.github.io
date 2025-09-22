@@ -1,5 +1,10 @@
-# Using Shadow Stacks to Reduce Performance Perturbation in Sampling Profilers
++++
+title = "Using Shadow Stacks to Reduce Performance Perturbation in Sampling Profilers"
+date = "2025-09-15"
 
+[extra]
+toc = true
++++
 ## Project Overview
 
 Sampling based profilers such as `perf`, collects call-stacks periodically to provide information about the frequency of the function calls.

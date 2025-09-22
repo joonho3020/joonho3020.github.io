@@ -1,5 +1,10 @@
-# XLS - Google's open-source HLS tool
++++
+title = "XLS - Google's open-source HLS tool"
+date = "2024-08-24"
 
+[extra]
+toc = true
++++
 ## What is XLS?
 
 XLS is Google’s in-house open-source HLS tool. Some refer to it as “mid-level synthesis,” but it is more accurately described as a transactional-level HLS. The language consists of three main components: functions, processes, and channels.

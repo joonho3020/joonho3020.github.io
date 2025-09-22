@@ -1,5 +1,10 @@
-# ASPLOS 2024 Notes
++++
+title = "ASPLOS 2024 Notes"
+date = "2024-04-28"
 
+[extra]
+toc = true
++++
 ## XiangShan tutorial
 
 ### XiangShan infrastructure

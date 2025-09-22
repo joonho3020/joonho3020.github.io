@@ -1,5 +1,10 @@
-# Some research projects
++++
+title = "Some research projects"
+date = "2025-09-08"
 
+[extra]
+toc = true
++++
 I'll be graduating in 2026 May so we can do research together for a year.
 If you are an undergrad (or early stage grad student) in UC Berkeley and interested in any of these projects, feel free to send me an email.
 
@@ -27,7 +32,7 @@ If you are an undergrad (or early stage grad student) in UC Berkeley and interes
         - Step zero would be to understand how linux perf works under the hood by heart
         - Next step is to implement this in spike & linux
         - Final step would be to implement this in RTL, but this can be painful and would involve using firesim. this can be a stretch goal
-    - [Detailed project description here](./shadow-stack-profiler.md)
+    - [Detailed project description here](/shadow-stack-profiler)
 - Building a hardware module for SoC event tracking
     - [Profiling hello world](https://queue.acm.org/detail.cfm?id=3291278)
         - First and foremost, you must see to understand and optimize. Otherwise you will be mislead into investigating irrelevant things (i.e., the streetlight effect where you are searching under the streetlight, not actually where your missing keys are!)
