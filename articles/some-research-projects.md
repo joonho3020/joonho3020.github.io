@@ -48,6 +48,11 @@ If you are an undergrad (or early stage grad student) in UC Berkeley and interes
 - Improving the BOOM frontend bottlenecks
     - Currently, BOOM can only fetch consecutive basic blocks at a time. For high performance cores, need to be able to fetch multiple (normally 2) non-consecutive BBs at a time. Modify the boom frontend to handle this. It will require intrusive changes to the boom mid end too though
     - Modify the boom I-cache so that we can perform fetches from straddled cachelines (modifying existing complex RTL is not easy, but this is a well scoped microarchitecture project)
+        - [Initial implementation here](https://github.com/joonho3020/riscv-boom/tree/cacheline-cross)
+            - Adds an additional read port in the I-cache tag array
+        - Next steps
+            - Perform more aggressive DV
+            - Update the branch predictor to handle predictions across cacheline boundaries. Currently, the predictor assumes a fetch bundle never spans multiple cachelines, which leads to mispredictions when a branch lies in the next cacheline (even if it hits in the icache)
 - Building an OoO performance model (although I'm not a huge fan of performance models...)
     - Good for building a strong understanding of OoO execution
     - Feed in traces from functional simulator (rusty-spike) into this performance model (probably use rust???)
