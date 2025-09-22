@@ -47,13 +47,13 @@ Paper PDF, ACM DL (open-access) | [NeuRex](https://dl.acm.org/doi/abs/10.1145/35
 
 ## Teaching
 
-* While I was in Seoul National University
-- [**430.315A: Digital Systems Design and Experiments**]
-- [**430.322: Computer Organization**]
+* While in Seoul National University
+    - [**430.315A: Digital Systems Design and Experiments**]
+    - [**430.322: Computer Organization**]
 
-* While I was in UC Berkeley
-- [**CS152/252: Computer Architecture**]
-- [**CS61C: Great Ideas in Computer Architecture **]
+* While in UC Berkeley
+    - [**CS152/252: Computer Architecture**]
+    - [**CS61C: Great Ideas in Computer Architecture**]
 
 ## Misc
 
