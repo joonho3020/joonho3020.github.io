@@ -21,6 +21,7 @@ Specifically, I'm interested in reducing perturbations during profiling, hardwar
 ## Projects
 
 - [Processor based RTL emulation engine](https://github.com/joonho3020/berkeley-emulation-engine)
+    - [Documentation here](https://github.com/joonho3020/berkeley-emulation-engine/blob/main/docs/emulation-processor.pdf)
 - [Simulation driven full-stack system profiling](https://github.com/joonho3020/vertical-profiler)
 - [RTL implementation of ZStd (de)compression accelerators](https://github.com/ucb-bar/compress-acc)
 - [Adding cross cacheline fetch support in BOOM](https://github.com/joonho3020/riscv-boom/tree/cacheline-cross)
