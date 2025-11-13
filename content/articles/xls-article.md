@@ -1,27 +1,44 @@
 +++
-title = "XLS - Google's open-source HLS tool"
+title = "XLS Considered Harmful"
 date = "2024-08-24"
 
 [extra]
 toc = true
 +++
+
+# XLS Considered Harmful
+
+Google's ASIC team looks impressive from the outside thanks to their mobile SoCs and TPUs.
+Nevertheless, one should never judge a book by its cover, as one may lose their sanity once pressured to use their internal HLS tool called XLS.
+In this post, we provide a brief overview of what XLS is, why it is fundamentally useless, and how this insidious project has leaked into OpenAI.
+
 ## What is XLS?
 
-XLS is Google’s in-house open-source HLS tool. Some refer to it as “mid-level synthesis,” but it is more accurately described as a transactional-level HLS. The language consists of three main components: functions, processes, and channels.
+XLS is Google’s in-house open-source HLS tool.
+The developers calls it "mid-level synthesis"[^2], but it is more accurately described as a transactional-level HLS.
+The language consists of three main components: functions, processes, and channels.
 
-Functions essentially describe combinational logic, channels represent module ports (usually latency-insensitive), and processes are a composition of functions, channels, and sequential logic. Given a circuit description, the compiler can automatically pipeline it to ensure it meets timing requirements during physical design. I’ll discuss this in detail later.
+Functions describe combinational logic, channels represent module ports (usually latency-insensitive), and processes are a composition of functions, channels, and sequential logic.
+Given a circuit description, the compiler can automatically pipeline it to ensure it meets timing requirements during physical design.
+I'll discuss this in detail later.
 
-So, does XLS seem appealing to you? Personally, I don’t find it to be all that impressive. Let’s explore why it might not be the best HDL available.
+So, does XLS seem appealing? Personally, I don’t find it to be all that impressive. Let’s explore why it might not be the best HDL available.
 
----
+## The Very Few Nice Parts of XLS
 
-## There are a few nice parts
-
-Although I found a lot of shortcommings with this HDL, I also found some nice parts about it.
+One should always try to learn, even from the worst of the worst.
+Useless as XLS may be in practice, it did make a few good design decisions so lets take a look.
 
 ### IR
 
-The IR design is nice and clean. First of all, XLS uses a sea-of-nodes representation, which is essentially a graph representation. This approach makes writing passes much easier compared to SSA-style hardware IRs. Let’s take the DCE (Dead Code Elimination) pass as an example. In XLS, the DCE pass is a simple graph traversal, whereas in FIRRTL, the DCE pass spans over 500 lines of Scala code. This complexity arises because, with an SSA-style representation, you must traverse the in-memory representation twice: first to construct a graph representation, and then to actually traverse it.
+The IR design is clean.
+First, XLS uses a sea-of-nodes representation, which models the IR as a graph.
+As circuits are inherently graphs, writing optimization passes becomes much simpler than in SSA-style hardware IRs.
+
+Take Dead Code Elimination (DCE) pass as an example.
+In XLS, DCE is just a straightforward graph traversal.
+In FIRRTL, the DCE pass spans over 500 lines of Scala.
+The complexity comes from the SSA-style representation, which requires two traversals: one to build an internal graph representation, and another to traverse it.
 
 - XLS DCE pass
 
@@ -137,32 +154,39 @@ class DeadCodeElimination extends Transform with RegisteredTransform with Depend
 }
 ```
 
-Another good decision they made was not to include any compiler dialects. Dialects typically fragment the compiler infrastructure and hinder the interoperability of passes.
+Another good decision they made was to avoid compiler dialects.
+Dialects typically fragment the compiler infrastructure and hinder pass interoperability.
+Just look at the number of [CIRCT dialects](https://circt.llvm.org/docs/Dialects/).
+One would need a huge amount of pain tolerance to work in such a codebase.
 
 ### Generic tooling side 
 
 XLS also offers some strong features in terms of generic tooling.
 
-- First of all, the inline testbench is quite lightweight and easy to use—definitely an improvement over writing Verilog testbenches.
-
-- In XLS, you can “JIT” your design into native code to perform functional simulation, which is a benefit of the custom compiler approach. This method is fast and useful for the initial pipecleaning of the design. Additionally, the ability to use print statements for debugging is another advantage.
-
-- Bazel is used as the main build system. Its caching and incremental compilation support provide a very quick edit-run-debug loop (though this is more of a compliment toward Bazel).
+- Inline testbench support is an improvement over writing Verilog testbenches
+- In XLS, the design can be JIT'ed into native code to perform functional simulation, a benefit of the custom compiler approach. The simulator runs fast and allows printf debugging
+- Although more of a compliment towards Bazel, tight integration with it enables caching and incremental compilation, providing a tight edit-run-debug loop
 
 ---
 
-## XLS pitfalls
+## Why XLS is Useless
 
-There are a few poor design decisions in XLS. Let’s take a look at each one.
+One does not need a huge amount of intelligence to tell that using XLS will harm their productivity, rather than improve it.
+Let us see why.
 
-### Abstraction is all that matters
+### No Control Flow Synthesis
 
-The biggest problem with XLS is that the abstraction on which this language is built is fundamentally “wrong”. Traditional HLS tools (e.g., Catapult or SystemC) have a significant advantage over hand-written RTL by allowing developers to work at higher levels of abstraction. These tools typically support control flow synthesis, freeing designers from having to reason about the control path on a cycle-by-cycle, bit-by-bit basis. Automating this process alleviates a huge burden, as debugging control flow is where hardware designers spend much of their time.
+The biggest problem with XLS is that the **abstraction it provides is fundamentally wrong** for an HLS tool.
+Traditional HLS[^3] has a clear advantage over RTL because it supports control-flow synthesis.
+Automating this process removes a major burden, since debugging control flow is where hardware designers spend a large portion of their time.
 
-However, XLS sets its abstraction boundary by not supporting control flow synthesis. This means that if you have a complex FSM (Finite State Machine) to implement, you cannot describe the circuit in an imperative-style language and rely on the compiler to synthesize the control logic. Instead, you must explicitly instantiate all the hardware state required to control the FSM and manually ensure it behaves as expected.
+XLS, however, does not support control-flow synthesis, undermining the entire point of using HLS in the first place.
+Without it, implementing anything with a nontrivial FSM requires manually instantiating all the hardware state and control logic, rather than expressing the design in an imperative style.
+At that point, writing XLS is not much different from writing RTL.
 
-Let’s consider an example. The code block below is a GCD module expressed in XLS. As you can see, all the necessary state to express the FSM (i.e., GCDState) has been explicitly instantiated by the programmer. Moreover, the next function closely resembles an FSM written in RTL, which is definitely not what we want from an HLS tool.
-
+The code block below is a GCD module expressed in XLS.
+As one can see, all the necessary state to express the FSM (i.e., GCDState) has been explicitly instantiated by the programmer.
+The `next` function closely resembles an FSM written in RTL.
 
 ```rust
 struct GCDState<N: u32> {
@@ -215,12 +239,18 @@ proc GCD<N: u32> {
 }
 ```
 
-One abstraction that XLS does provide is communication channels, which are essentially latency-insensitive ports. By abstracting away these constructs, XLS helps avoid backpressure bugs by design [^1]. However, logic synthesis for latency-insensitive interfaces is not as beneficial as having control flow synthesis. For example, if bus responses arrive out of order, it remains the designer’s responsibility to manually write the control logic to handle the responses correctly.
+One abstraction that XLS does provide is communication channels, which are essentially latency-insensitive ports.
+By abstracting these constructs, XLS helps avoid backpressure bugs by design [^1].
+However, logic synthesis for latency-insensitive interfaces is far less valuable than having control flow synthesis.
+For example, if bus responses arrive out of order, the designer is still responsible for manually writing the control logic to handle them correctly.
 
-Moreover, there are cases where designers need to use ports that are not latency-insensitive but require combinational feedback paths (e.g., priority encoders). Expressing this type of logic using XLS channels is challenging. Designers are then forced to write suboptimal blocks that waste cycles performing ready-valid handshakes when combinational logic could suffice.
+Moreover, there are cases where designers need ports that are not latency-insensitive and require combinational feedback paths (e.g., priority encoders).
+Expressing this kind of logic using XLS channels is difficult.
+Designers are then forced to write suboptimal blocks that waste cycles performing ready–valid handshakes when simple combinational logic would have been sufficient.
 
-One benefit of the channel abstraction is its use in testbenches. The XLS abstraction allows the programmer to interact with each port without having to explicitly perform ready-valid handshakes, which is a slight improvement over the RTL abstraction. For example, in the `Tester` example below, we can interact with the DUT using only `send` and `recv` functions. However, the abstraction is still not high enough to provide a substantial advantage over the RTL abstraction.
-
+One benefit of the channel abstraction is its use in testbenches.
+The XLS abstraction allows the programmer to interact with each port without explicitly performing ready–valid handshakes, which is a slight improvement over the RTL abstraction.
+For example, in the `Tester` example below, the programmer can interact with the DUT using only `send` and `recv` functions.
 
 ```rust
 #[test_proc]
@@ -255,33 +285,50 @@ proc Tester {
 ```
 
 
-It seems like for the abstraction that XLS is taking, the compiler is doing all the "easy work" of taking care of latency insensitive interfaces while defering all the "hard work" to the designer. This probably isn't what most people expect from a good compiler.
+In XLS, the compiler is doing all the "easy work" of taking care of latency insensitive interfaces while defering all the "hard work" to the designer.
 
-### You won't be adding faster than an adder (Dr. Quinnel's 2nd law)
 
-One main selling point of XLS is its automatic pipelining capabilities. It uses a delay estimation model for a particular technology (ASAP7 is currently supported) to automatically insert pipeline stages and reduce critical path lengths. While this sounds promising, it may not be as effective as it seems. For latency-insensitive boundaries, queues between the ports can introduce additional stages that will cut combinational logic between blocks. For combinational logic, synthesis tools generally perform better at retiming. Modern synthesis tools are highly advanced, and it is unlikely that the XLS compiler can achieve an optimization for any combinational logic that surpasses what these tools offer (which is basically the 2nd law of Dr. Quinnel).
+### One Should Trust Synthesis
 
-You might argue that XLS can reduce the iteration time for fixing critical paths. While it’s true that you can quickly iterate using the delay model without going through synthesis, this advantage is limited if the delay model isn’t very accurate. In practice, the delay model will never match the accuracy of synthesis tools, which limits the overall benefit.
+The major selling point of XLS is its automatic pipelining capabilities.
+It uses a delay estimation model for a particular technology (currently ASAP7) to automatically insert pipeline stages and cut critical paths.
+However, this is a completely useless technique.
 
-The GitHub issue below is an example where the XLS QoR (Quality of Results) prediction leads to problems. Since XLS attempts to pipeline the design in the HDL frontend, changes in how the frontend is written can affect the estimated QoR of the circuit. However, in reality, the synthesis tool will address these issues regardless of the frontend’s implementation. In conclusion, this issue illustrates the pitfalls of premature optimization.
+For latency-insensitive interfaces, queues between ports already introduce extra stages that break up long combinational paths.
+For combinational logic, traditional synthesis tools generally perform superior retiming.
+And since XLS ultimately emits Verilog, the downstream synthesis tool will run retiming on the block anyway.
+
+One may wonder how a compiler can arbitrarily insert pipeline stages without breaking functional correctness.
+This circles back to XLS’s abstraction: module boundaries are latency-insensitive.
+To support frontend retiming, **XLS must restrict the abstractions available to designers, which ultimately harms both productivity and QoR**.
+
+One may argue that XLS can reduce iteration time when fixing critical paths.
+While it's true that quick iteration is possible using the delay model (since it avoids running synthesis) this falls apart as soon as the model is inaccurate.
+In practice, the delay model will never match the accuracy of real synthesis tools, especially now that modern CAD flows perform physical synthesis.
+Also, the delay model is tuned towards ASAP7, which is a technology that nobody uses for serious tapeouts.
+
+The GitHub issue below illustrates how XLS’s frontend QoR (Quality of Results) prediction can lead to problems.
+Because XLS tries to pipeline the design in the HDL frontend, small changes in how the code is written can affect the estimated QoR.
+In reality, however, the downstream synthesis tool will resolve these issues regardless of how the frontend is structured.
 
 - [XLS github issue - premature optimization is the real issue](https://github.com/google/xls/issues/1482)
 
-### Building a custom compiler is (usually) not a good idea
+### Custom Compiler Should be Avoided
 
-Now, let’s discuss some of their software engineering decisions. The XLS team took the bold step of building a custom compiler from scratch, which is a double-edged sword. On one hand, it provides the freedom to design according to specific needs, potentially leading to better ergonomics and enabling native language-level simulations. On the other hand, it involves a significant amount of work to get everything set up and functioning properly.
+Now, let's discuss some of their software engineering decisions.
+The XLS team took the bold step of building a custom compiler from scratch, which is a double-edged sword.
+On one hand, it provides the freedom to design according to specific needs, potentially leading to better ergonomics and enabling native language-level simulations.
+On the other hand, it involves a significant amount of work to get everything set up and functioning properly.
 
-In my experience with XLS (or perhaps in my unsuccessful attempt to use it), the disadvantages seemed to outweigh the benefits. Here is a list of limitations I encountered from a purely software engineering perspective:
+In my experience with XLS[^4], the disadvantages seemed to outweigh the benefits.
+Here is a list of limitations I encountered from a purely software engineering perspective:
 
-- Modules in XLS are parameterized using type parameters, rather than standard function arguments (e.g., `proc GCD<N: u32>` in the GCD example above). Although programmers can compute arbitrary arguments from other arguments and call functions, this approach feels less ergonomic compared to placing these parameters as function arguments.
+- Modules in XLS are parameterized using type parameters, rather than standard function arguments (e.g., `proc GCD<N: u32>` in the GCD example above). This is unergonomic
+- The compiler does not support automatic bit-width inference, so the programmer must specify the type of each wire explicitly. This requirement makes the code verbose and cumbersome. While some might argue that width inference isn't crucial, those who have used an HDL with width inference (e.g., Chisel) will understand how much easier it is to write code without having to manage these intricate details of the design.
+- They implemented a standard library to handle basic tasks like reading files, which is necessary for writing testbenches. In contrast, if they had used an embedded DSL, handling files containing testbench data would have been much simpler. While this may not impact the end user significantly, it likely required a considerable amount of effort from the engineers
+- Miscellaneous compilation bugs. I encountered issues compiling a `for` statement while trying to create a multi-banked SRAM in my design. It appears that others have faced similar difficulties. For example, in the [XLS ZStd implementation](https://github.com/antmicro/xls/blob/76e650ac9030757a9960045931007a56311a1fca/xls/modules/zstd/sequence_executor.x#L1337), the programmer had to hand-unroll the SRAM banks because the `for` statement was broken (this example also highlights how verbose the code becomes due to the lack of type inference)
 
-- The compiler does not support automatic bit-width inference, so the programmer must specify the type of each wire explicitly. This requirement makes the code verbose and cumbersome. While some might argue that width inference isn’t crucial, those who have used an HDL with width inference (e.g., Chisel) will understand how much easier it is to write code without having to manage these intricate details of the design.
-
-- They implemented a standard library to handle basic tasks like reading files, which is necessary for writing testbenches. In contrast, if they had used an embedded DSL, handling files containing testbench data would have been much simpler. While this may not impact the end user significantly, it likely required a considerable amount of effort from the engineers.
-
-- Miscellaneous compilation bugs were also a problem. I encountered issues compiling a `for` statement while trying to create a multi-banked SRAM in my design. It appears that others have faced similar difficulties. For example, in the [XLS ZStd implementation](https://github.com/antmicro/xls/blob/76e650ac9030757a9960045931007a56311a1fca/xls/modules/zstd/sequence_executor.x#L1337), the programmer had to hand-unroll the SRAM banks because the `for` statement was broken (this example also highlights how verbose the code becomes due to the lack of type inference).
-
-In my opinion, they would have had an easier time with an embedded DSL approach, as it would provide many benefits: generic type inference, fewer compiler bugs, build tools, and access to existing software libraries for the host language. However, I understand that this project is still a work in progress, and these software limitations can be addressed with enough engineering effort. I look forward to the improvements that will come.
+The XLS team would have had an easier time with an embedded DSL approach, as it would provide many benefits: generic type inference, fewer compiler bugs, build tools, and access to existing software libraries.
 
 ## Fun facts
 
@@ -294,23 +341,26 @@ One interesting aspect of this project is that there was a [Hacker News article]
 - "Take this language for example - it cannot express any control flow. It's feed forward only. Which essentially means, it is impossible to express most of the difficult parts of the problems people solve in hardware. I hate Verilog, I would love a better solution, but this language is like designing a software programming language that has no concept of run-time conditionals."
 
 
-My guess is that there wasn’t a hardware engineer on the XLS team to guide them in the right direction. It’s unfortunate that the XLS team chose to disregard feedback when they had the opportunity to rethink the project from the ground up.
-
----
+My guess is that there wasn't a hardware engineer on the XLS team to guide them in the right direction.
+It's unfortunate that the XLS team chose to disregard feedback when they had the opportunity to rethink the project from the ground up.
 
 ## Conclusion
 
-Overall, I don’t think XLS is suitable for initial prototyping of designs, let alone for tapeouts. The abstraction level isn’t high enough to provide a productivity advantage over RTL, and the generated RTL will have lower QoR compared to hand-written RTL implementations. The automatic pipelining feature is not particularly helpful in most cases, especially when its accuracy is questionable. Additionally, the ergonomics of the frontend language do not enhance productivity. Integration testing in a full SoC context is also challenging because you need to write glue code to integrate the generated Verilog into the SoC, although this issue is common among many HLS tools and could be a potential area for research.
+Overall, XLS is unsuitable for initial prototyping of designs, let alone for tapeouts.
+The abstraction level isn't high enough to provide a productivity advantage over RTL, and the generated RTL will have lower QoR compared to hand-written RTL implementations.
+The automatic pipelining feature is not useful, especially synthesis will perform retiming, and when the accuracy of their delay model is questionable.
+The ergonomics of the frontend language do not enhance productivity.
+Integration testing in a full SoC context is also challenging because you need to write glue code to integrate the generated Verilog into the SoC, although this issue is common among many HLS tools.
 
-Nevertheless, I appreciate their effort in building a new hardware design language from scratch and exploring new abstractions. Integrating software techniques into hardware design is a valuable area for research and has the potential to unlock new possibilities. Admittedly, this is a challenging field that requires expertise in both hardware design and programming languages. We should learn from past mistakes and aim to do better next time. There is always room for improvement when developing tools.
-
-
-[^1]: Technically, backpressure bugs can still happen.
-
----
+It's unclear why Google continues to fund a project with no apparent technical merit.
 
 ## Citations
 
 - [XLS github issue - premature optimization is the real issue](https://github.com/google/xls/issues/1482)
 - [XLS ZStd implementation](https://github.com/antmicro/xls/blob/76e650ac9030757a9960045931007a56311a1fca/xls/modules/zstd/sequence_executor.x#L1337)
 - [Hacker News article](https://news.ycombinator.com/item?id=24354083)
+
+[^1]: Technically, backpressure bugs can still happen.
+[^2]: Googlers loves funny names.
+[^3]: Catapult or SystemC.
+[^4]: Or perhaps in my unsuccessful attempt to use it
