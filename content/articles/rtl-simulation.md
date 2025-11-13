@@ -18,7 +18,7 @@ At RTL, there are three components:
 3. Wires – These carry signals (bits) between components.
 
 <div style="text-align:center; margin: 1em 0;">
-  <img src="/articles/assets/rtl-example.svg" width="300">
+  <img src="/articles/assets/rtlsim/rtl-example.svg" width="300">
 </div>
 
 In the example, two registers drive an adder (combinational logic) whose output feeds into the input register.
@@ -37,7 +37,7 @@ To simplify things even further, lets consider a *single level of sequential log
 Such circuits form a directed acyclic graph (DAG) because combinational loops are not allowed.
 
 <div style="text-align:center; margin: 1em 0;">
-  <img src="/articles/assets/levelization.svg" width="500">
+  <img src="/articles/assets/rtlsim/levelization.svg" width="500">
 </div>
 
 The first step to simulating a single level of sequential logic is to **levelize** it (a.k.a topological sort).
@@ -67,7 +67,7 @@ Now consider circuits with multiple register stages.
 These may contain cycles, but every cycle must pass through at least one register.
 
 <div style="text-align:center; margin: 1em 0;">
-  <img src="/articles/assets/multi-level-seq.svg" width="700">
+  <img src="/articles/assets/rtlsim/multi-level-seq.svg" width="700">
 </div>
 
 In the first phase of the simulation, we simulate each level of sequential logic independently with each other.
@@ -89,7 +89,7 @@ These events are queued up in a priority queue and scheduled dynamically.
 This allows the simulator to skip evaluating unchanged parts of the circuit, saving time.
 
 <div style="text-align:center; margin: 1em 0;">
-  <img src="/articles/assets/event-driven.svg" width="500">
+  <img src="/articles/assets/rtlsim/event-driven.svg" width="500">
 </div>
 
 In the above example, the first event that is evaluated is the `sel` signal.

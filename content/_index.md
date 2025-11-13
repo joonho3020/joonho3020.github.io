@@ -14,7 +14,7 @@ Specifically, I'm interested in reducing perturbations during profiling, hardwar
 
 * [Is accelerator research really worth it?](/articles/research-on-domain-specific-architectures/)
 * [ASPLOS decompression 2024](/articles/asplos-24-decompression-public/)
-* [XLS - Google's open-source HLS tool](/articles/xls-article/)
+* [XLS Considered Harmful](/articles/xls-article/)
 * [Micro CAMS workshop 2024](/articles/micro-24-cams-workshop/)
 * [How RTL Simulation Works](/articles/rtl-simulation/)
 

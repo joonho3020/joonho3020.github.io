@@ -6,7 +6,7 @@ date = "2024-08-24"
 toc = true
 +++
 
-# XLS Considered Harmful
+## XLS Considered Harmful
 
 Google's ASIC team looks impressive from the outside thanks to their mobile SoCs and TPUs.
 Nevertheless, one should never judge a book by its cover, as one may lose their sanity once pressured to use their internal HLS tool called XLS.
@@ -354,6 +354,47 @@ Integration testing in a full SoC context is also challenging because you need t
 
 It's unclear why Google continues to fund a project with no apparent technical merit.
 
+
+## Addendum
+
+### 2025/11/13
+
+Chris Leary, the lead developer of XLS, jumped to OpenAI.
+Naturally, he brought his fellow Googlers with him and is continuing his quest to evangelize XLS.
+[xlsynth](https://github.com/xlsynth) seems to be repo for the OpenAI hardware team[^5].
+
+Mr. Leary wrote a [blog post](https://blog.cdleary.com/posts/2025/07/20/xlsynth-codegen-option-tour/) about XLS.
+The post is about retiming arithmetic circuits using XLS[^6].
+
+><div style="text-align:center; margin: 1em 0;">
+>  <img src="/articles/assets/xls/pipeline-2.png" width="300">
+></div>
+
+For `x * y + z`, Mr. Leary generates a circuit with two pipeline stages using XLS.
+
+>It is notable, however, that the multiply operation (blue circle) is creating a “combinational overhang” on input, i.e. there is a combinational logic cloud (via the multiply operation) that the inputs x and y pass through immediately after entering this module.
+>These are also typically seen as “input to register” (or “register to output”, for the green circle) delays in a timing report.
+>
+>The implication of this is that the instantiating module has to be aware of how much of a clock cycle that “combinational overhang” is going to require, because the instantiator needs to make sure there is that much slack available in the clock cycle for the inputs it feeds as x and y , in order to close timing.
+
+"Combinational overhang"[^7], which means pin-delay, is a foreign concept to Googlers: they think all optimizations stop around module boundaries.
+Cross-module optimization is something to be avoided as it "breaks" the module abstractions.
+
+>Using I/O flops to increase abstraction
+><div style="text-align:center; margin: 1em 0;">
+>  <img src="/articles/assets/xls/pipeline-flop-sandwich.png" width="300">
+></div>
+
+Of course, to prevent abstractions from leaking, they use a "flop sandwich" to flop the input and outputs.
+One should feel pity for Mr. Leary as even after five years of working on XLS, he still does not know about synthesis retiming.
+If one wants to pipeline the multiplication circuit, they can simply add a register in the end of the circuit and the tool will place it in the right place for them.
+Fancy circuit delay modeling or automatic pipelining is not required.
+
+>Why are we still thinking about people writing Verilog, why doesn’t XLS methodology “take over” everything?
+
+After reading this article, it should be pretty clear on why XLS is not taking over, and will never take over for that matter.
+
+
 ## Citations
 
 - [XLS github issue - premature optimization is the real issue](https://github.com/google/xls/issues/1482)
@@ -361,6 +402,9 @@ It's unclear why Google continues to fund a project with no apparent technical m
 - [Hacker News article](https://news.ycombinator.com/item?id=24354083)
 
 [^1]: Technically, backpressure bugs can still happen.
-[^2]: Googlers loves funny names.
+[^2]: Googlers love funny names.
 [^3]: Catapult or SystemC.
 [^4]: Or perhaps in my unsuccessful attempt to use it
+[^5]: Watching decisions being made based on politics, not technical merit, makes me weary
+[^6]: Remember, XLS is suitable mostly for feedforward dataflow circuits and supports retiming in the frontend. Optimizing arithmetic circuits is the best use of such a sophisticated tool
+[^7]: Again, Goolers love funny names.
