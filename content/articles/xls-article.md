@@ -400,6 +400,8 @@ After reading this article, it should be pretty clear on why XLS is not taking o
 - [XLS ZStd implementation](https://github.com/antmicro/xls/blob/76e650ac9030757a9960045931007a56311a1fca/xls/modules/zstd/sequence_executor.x#L1337)
 - [Hacker News article](https://news.ycombinator.com/item?id=24354083)
 
+---
+
 [^1]: Technically, backpressure bugs can still happen.
 [^2]: Googlers love funny names.
 [^3]: Catapult or SystemC.
