@@ -377,8 +377,7 @@ For `x * y + z`, Mr. Leary generates a circuit with two pipeline stages using XL
 >
 >The implication of this is that the instantiating module has to be aware of how much of a clock cycle that “combinational overhang” is going to require, because the instantiator needs to make sure there is that much slack available in the clock cycle for the inputs it feeds as x and y , in order to close timing.
 
-"Combinational overhang"[^7], which means pin-delay, is a foreign concept to Googlers: they think all optimizations stop around module boundaries.
-Cross-module optimization is something to be avoided as it "breaks" the module abstractions.
+"Combinational overhang"[^7], which means pin-delay, is a foreign concept to Mr. Leary.
 
 >Using I/O flops to increase abstraction
 ><div style="text-align:center; margin: 1em 0;">
@@ -386,14 +385,14 @@ Cross-module optimization is something to be avoided as it "breaks" the module a
 ></div>
 
 Of course, to prevent abstractions from leaking, they use a "flop sandwich" to flop the input and outputs.
-One should feel pity for Mr. Leary as even after five years of working on XLS, he still does not know about synthesis retiming.
-If one wants to pipeline the multiplication circuit, they can simply add a register in the end of the circuit and the tool will place it in the right place for them.
+
+After five years of working on XLS, Mr. Leary seem unaware of cross-module optimizations and retiming.
+To pipeline a multiplication circuit, one can simply add registers in the end of the combinational cloud, and synthesis will take care of the rest.
 Fancy circuit delay modeling or automatic pipelining is not required.
 
 >Why are we still thinking about people writing Verilog, why doesn’t XLS methodology “take over” everything?
 
 After reading this article, it should be pretty clear on why XLS is not taking over, and will never take over for that matter.
-
 
 ## Citations
 
