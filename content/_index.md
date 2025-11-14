@@ -17,6 +17,7 @@ Specifically, I'm interested in reducing perturbations during profiling, hardwar
 * [XLS Considered Harmful](/articles/xls-article/)
 * [Micro CAMS workshop 2024](/articles/micro-24-cams-workshop/)
 * [How RTL Simulation Works](/articles/rtl-simulation/)
+* [Repurposing AI Chips for RTL Emulation](/articles/ai-chips-for-rtlsim/)
 
 ## Projects
 
