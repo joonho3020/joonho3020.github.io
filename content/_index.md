@@ -18,6 +18,7 @@ Specifically, I'm interested in reducing perturbations during profiling, hardwar
 * [Micro CAMS workshop 2024](/articles/micro-24-cams-workshop/)
 * [How RTL Simulation Works](/articles/rtl-simulation/)
 * [Repurposing AI Chips for RTL Emulation](/articles/ai-chips-for-rtlsim/)
+* [Tips for Building an FPGA Shell](/articles/building-an-fpga-shell/)
 
 ## Projects
 
