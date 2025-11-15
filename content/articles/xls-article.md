@@ -348,7 +348,7 @@ It's unfortunate that the XLS team chose to disregard feedback when they had the
 
 Overall, XLS is unsuitable for initial prototyping of designs, let alone for tapeouts.
 The abstraction level isn't high enough to provide a productivity advantage over RTL, and the generated RTL will have lower QoR compared to hand-written RTL implementations.
-The automatic pipelining feature is not useful, especially synthesis will perform retiming, and when the accuracy of their delay model is questionable.
+The automatic pipelining feature is not useful, especially synthesis performs retiming, and when the accuracy of their delay model is questionable.
 The ergonomics of the frontend language do not enhance productivity.
 Integration testing in a full SoC context is also challenging because you need to write glue code to integrate the generated Verilog into the SoC, although this issue is common among many HLS tools.
 

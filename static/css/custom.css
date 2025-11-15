@@ -20,6 +20,12 @@ html[data-theme="dark"] {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Justify paragraphs */
+p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 /* Apply background/text */
 html, body { background: var(--bg); color: var(--text); }
 

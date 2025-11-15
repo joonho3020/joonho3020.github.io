@@ -48,6 +48,11 @@ Synopsys acquired Tharas, launched a product that wasn't successful, and quickly
 
 ### Custom FPGA Based Emulators
 
+<div style="display: flex; justify-content: center; gap: 1em; margin: 1em 0; flex-wrap: wrap;">
+  <img src="/articles/assets/ai-for-rtlsim/LUT-Tile.png" style="max-width: 48%;">
+  <img src="/articles/assets/ai-for-rtlsim/LUT-FPGA.png" style="max-width: 48%;">
+</div>
+
 Meta systems took a custom FPGA based emulator approach.
 Instead of using off-the-shelf FPGAs, these companies manufactured FPGAs specialize for emulation.
 The base unit of these custom FPGAs was called a tile, and each tile contained a number of LUTs, reconfigurable switches between the LUTs, multi-ported memories, and IO interfaces, similar to a conventional FPGA.
@@ -350,6 +355,6 @@ For these reasons, the first product a new CAD company should build is an RTL si
 
 [^1]: We refer to simulation as something that supports full waveform dumping, arbitrary clock ratios, and 4-state simulation. Emulation lacks or has limited support of these features.
 [^2]: This is a terrible architectural diagram by the way. Until someone from the Groq team explain this to my friend who explained it to me, I was very confused after reading this
-[^3]: The perception logic dedicated to instruction fetch can dominate the chip area is simply wrong. The correct architectural tradeoff is to always dedicate a little more area to make it more programmable
+[^3]: The perception that logic dedicated to instruction fetch can dominate the chip area is simply wrong. The correct architectural tradeoff is to always dedicate a little more area to make it more programmable
 [^4]: It's surprising that they decided to roll their own ISA instead of using RISC-V
 [^5]: Perhaps TT Blackhole has a chance
