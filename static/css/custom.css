@@ -1,5 +1,5 @@
 :root {
-  --bg: #e6e8ef;
+  --bg: #ffffff;
   --text: #2e3440;
   --muted: #6b7280;
   --accent: #E2494C;
@@ -51,6 +51,106 @@ h1, h2, h3 { color: var(--text); }
 h1 { letter-spacing: -0.01em; }
 
 pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+/* Inline code highlighting */
+:not(pre) > code {
+  background-color: #e5e7eb;
+  color: #D7494C;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+html[data-theme="dark"] :not(pre) > code {
+  background-color: #2a2e3a;
+  color: #f7768e;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+/* Code block styling */
+pre {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  line-height: 1.5;
+  background-color: #1e1e2e !important;
+}
+
+html[data-theme="dark"] pre {
+  background-color: #1e1e2e !important;
+}
+
+pre code {
+  background: none !important;
+  color: inherit;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+/* Theme toggle button visibility */
+.theme-toggle {
+  padding: 0.25rem !important;
+  border-radius: 0.25rem !important;
+  position: relative !important;
+  min-width: 2rem !important;
+  min-height: 2rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Fallback text content when SVG doesn't render */
+.theme-toggle::before {
+  content: "☀";
+  font-size: 1.2rem;
+  position: absolute;
+  color: #2e3440;
+  display: block;
+  line-height: 1;
+}
+
+html[data-theme="dark"] .theme-toggle::before {
+  content: "☾";
+  color: #c0caf5;
+}
+
+.theme-toggle:hover::before {
+  color: #E2494C;
+}
+
+.theme-toggle .icon,
+.theme-toggle svg {
+  color: #2e3440 !important;
+  fill: #2e3440 !important;
+  stroke: #2e3440 !important;
+  opacity: 1;
+  width: 1.3rem !important;
+  height: 1.3rem !important;
+  display: inline-block !important;
+}
+
+.theme-toggle use {
+  color: #2e3440 !important;
+  fill: #2e3440 !important;
+  stroke: #2e3440 !important;
+}
+
+html[data-theme="dark"] .theme-toggle .icon,
+html[data-theme="dark"] .theme-toggle svg,
+html[data-theme="dark"] .theme-toggle use {
+  color: #c0caf5 !important;
+  fill: #c0caf5 !important;
+  stroke: #c0caf5 !important;
+}
+
+.theme-toggle:hover .icon,
+.theme-toggle:hover svg,
+.theme-toggle:hover use {
+  color: #E2494C !important;
+  fill: #E2494C !important;
+  stroke: #E2494C !important;
+  opacity: 1;
+}
 
 .sidebar-toc {
   flex: 0 0 var(--toc-width);

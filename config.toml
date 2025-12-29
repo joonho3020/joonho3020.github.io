@@ -5,6 +5,10 @@ build_search_index = true
 
 theme = "anemone"
 
+[markdown]
+highlight_code = true
+highlight_theme = "monokai"
+
 # Site metadata
 title = "Joonho Whangbo"
 description = "Ph.D. student in Computer Science at UC Berkeley"
