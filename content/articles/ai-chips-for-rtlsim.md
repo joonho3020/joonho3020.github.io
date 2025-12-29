@@ -160,7 +160,7 @@ Back of the envelope performance projection:
 - @1GHz frequency
 - 500 ~ 700KHz emulation frequency
 
-Back of the envelop capacity:
+Back of the envelope capacity:
 
 - Each instruction 4B
 - Each node is 10 instructions (guessing) + produces one 4B word
@@ -175,10 +175,9 @@ Miscellaneous:
 - The card is highly accessible. Anyone can purchase it for $1000
 - Most of the chip area is wasted as the baby RISC-V cores take only 2% of the overall chip area[^3]. Not sure how to use the coprocessor efficiently
 
-Overall, this seems like the most reasonable architecture out of every ML accelerator chips.
+Overall, out of all the ML accelerator chips, this seems like the most reasonable architecture.
 Especially because these are simple RISC-V cores, we get the software toolchain for free.
 This is easy to overlook, but actually very powerful.
-
 
 
 #### PEZY-SC
