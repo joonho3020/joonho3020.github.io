@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+{% include "partials/schema-article.html" %}
+{% endblock %}
+
+{% block content %}
+{% if page.extra.toc and page.toc %}
+<div class="article-with-sidebar">
+    <!-- LEFT SIDEBAR TOC -->
+    <aside class="sidebar-toc" id="sidebar-toc">
+        <nav class="toc-nav" aria-label="Table of Contents">
+            <h2 class="toc-title">Contents</h2>
+            <ul class="toc-list">
+                {% for h1 in page.toc %}
+                <li class="toc-item toc-h1">
+                    <a href="{{ h1.permalink | safe }}" data-id="{{ h1.id }}">{{ h1.title }}</a>
+                    {% if h1.children %}
+                    <ul class="toc-sublist">
+                        {% for h2 in h1.children %}
+                        <li class="toc-item toc-h2">
+                            <a href="{{ h2.permalink | safe }}" data-id="{{ h2.id }}">{{ h2.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <article class="post post-with-toc">
+{% else %}
+<article class="post">
+{% endif %}
+        <header class="post-header">
+            {% if page.date and page.extra.display_published | default(value=true) %}
+            <time datetime="{{ page.date }}">Published on:
+                <span class="accent-data">{{ page.date | date(format="%Y-%m-%d") }}</span>
+            </time>
+            {% endif %}
+
+            {% if page.extra.author %}
+            <address rel="author">By
+                <span class="accent-data">{{ page.extra.author }}</span>
+            </address>
+            {% endif %}
+
+            <h1>{{ page.title }}</h1>
+        </header>
+
+        <div class="post-content">
+            {{ page.content | safe }}
+        </div>
+
+        {% if page.taxonomies.tags %}
+        <footer class="post-tags">
+            {% for tag in page.taxonomies.tags %}
+            <a href="/tags/{{ tag | slugify }}" class="tag">#{{ tag }}</a>
+            {% endfor %}
+        </footer>
+        {% endif %}
+    </article>
+
+{% if page.extra.toc and page.toc %}
+</div>
+{% endif %}
+{% endblock %}
