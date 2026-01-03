@@ -12,17 +12,20 @@ Specifically, I'm interested in reducing perturbations during profiling, hardwar
 
 ## Articles
 
-* [Is accelerator research really worth it?](/articles/research-on-domain-specific-architectures/)
-* [ASPLOS decompression 2024](/articles/asplos-24-decompression-public/)
+* [Developing a Frontend HDL](/articles/frontend-hdl-dev/)
+* [Tips for Building an FPGA Shell](/articles/building-an-fpga-shell/)
+* [Repurposing AI Chips for RTL Emulation](/articles/ai-chips-for-rtlsim/)
+* [How RTL Simulation Works](/articles/rtl-simulation/)
 * [XLS Considered Harmful](/articles/xls-article/)
 * [Micro CAMS workshop 2024](/articles/micro-24-cams-workshop/)
-* [How RTL Simulation Works](/articles/rtl-simulation/)
-* [Repurposing AI Chips for RTL Emulation](/articles/ai-chips-for-rtlsim/)
-* [Tips for Building an FPGA Shell](/articles/building-an-fpga-shell/)
+* [ASPLOS decompression 2024](/articles/asplos-24-decompression-public/)
+* [Is accelerator research really worth it?](/articles/research-on-domain-specific-architectures/)
 
 ## Projects
 
 - [Processor based RTL emulation engine](https://github.com/joonho3020/berkeley-emulation-engine) - [documentation available here](https://github.com/joonho3020/berkeley-emulation-engine/blob/main/docs/emulation-processor.pdf)
+- [Hardware Description Language Embedded in Scala 3](https://github.com/joonho3020/scala3-hdl)
+- [Simple RISC-V SuperScalar Out-of-Order Core (RV32I)](https://github.com/joonho3020/scala3-hdl/tree/main/riscv_ooo)
 - [Simulation driven full-stack system profiling](https://github.com/joonho3020/vertical-profiler)
 - [RTL implementation of ZStd (de)compression accelerators](https://github.com/ucb-bar/compress-acc)
 - [Adding cross cacheline fetch support in BOOM](https://github.com/joonho3020/riscv-boom/tree/cacheline-cross)

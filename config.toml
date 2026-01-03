@@ -7,7 +7,11 @@ theme = "anemone"
 
 [markdown]
 highlight_code = true
-highlight_theme = "monokai"
+highlight_theme = "cheerfully-light"
+
+# Table of contents configuration
+toc_min_level = 1
+toc_max_level = 6
 
 # Site metadata
 title = "Joonho Whangbo"
@@ -22,7 +26,7 @@ external_links_target_blank = true
 
 [extra]
 # List articles on the homepage via theme support
-list_pages = false
+list_pages = true
 # Optional: show author on posts
 display_author = true
 # Optional header nav

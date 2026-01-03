@@ -5,6 +5,19 @@
 {% include "partials/schema-article.html" %}
 {% endblock %}
 
+{% macro render_toc(headers, level) %}
+    {% for header in headers %}
+    <li class="toc-item toc-h{{ level }}">
+        <a href="{{ header.permalink | safe }}" data-id="{{ header.id }}">{{ header.title }}</a>
+        {% if header.children %}
+        <ul class="toc-sublist">
+            {{ self::render_toc(headers=header.children, level=level + 1) }}
+        </ul>
+        {% endif %}
+    </li>
+    {% endfor %}
+{% endmacro %}
+
 {% block content %}
 {% if page.extra.toc and page.toc %}
 <div class="article-with-sidebar">
@@ -13,20 +26,7 @@
         <nav class="toc-nav" aria-label="Table of Contents">
             <h2 class="toc-title">Contents</h2>
             <ul class="toc-list">
-                {% for h1 in page.toc %}
-                <li class="toc-item toc-h1">
-                    <a href="{{ h1.permalink | safe }}" data-id="{{ h1.id }}">{{ h1.title }}</a>
-                    {% if h1.children %}
-                    <ul class="toc-sublist">
-                        {% for h2 in h1.children %}
-                        <li class="toc-item toc-h2">
-                            <a href="{{ h2.permalink | safe }}" data-id="{{ h2.id }}">{{ h2.title }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                </li>
-                {% endfor %}
+                {{ self::render_toc(headers=page.toc, level=1) }}
             </ul>
         </nav>
     </aside>
