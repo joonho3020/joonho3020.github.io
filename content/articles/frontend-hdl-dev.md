@@ -62,7 +62,7 @@ Nim is an interesting choice as it has flexible operator and function overloadin
 But you also see what happens to HDL ergonomics when there’s no apply[^2]-style constructor.
 
 In the example below, because there’s no `apply`, I define the type as `XObj` and the constructor as `X`.
-The `Obj` suffix then leaks into bundle composition (for example, bar in `NestedBundle`).
+The `Obj` suffix then leaks into bundle composition (for example, `bar` in `NestedBundle`).
 This gets nasty quickly once you have multiple levels of nested bundles.
 
 ```nim
@@ -190,6 +190,8 @@ The motivation was to avoid using `case class` for `Bundle`s, since it forces yo
 
 ```scala
 case class MyBundle(val a: UInt, val b: UInt) extends Bundle
+
+// Designers now have to define constructors for each bundle schema
 object MyBundle {
   def apply(wa: Int): MyBundle = {
     new MyBundle(UInt(wa.W), UInt((wa+2).W)))
@@ -198,7 +200,7 @@ object MyBundle {
 ```
 
 To proceed, I defined `Bundle` using structural types and `Selectable`.
-If you aren’t familiar with structural types in Scala 3, you can think of them as “objects whose fields are computed dynamically,” with a type-level description that restricts which fields are legal to access.
+If you aren’t familiar with structural types in Scala 3, you can think of them as “objects whose fields are computed dynamically,”.
 
 A minimal Bundle skeleton looks like this:
 
@@ -369,7 +371,7 @@ final class Lit[T](private val payload: Any) extends Selectable:
 
 In (1) we define the computed field names for the `Lit` class.
 Specifically, we can iterate over the fields of type `T` using `NamedTuple.Map`, and transform the return type to be a `Lit[X]` for each subfield type `X`.
-Next, we desugar the type `T` as a product type in (2), find the subfield payload using in (3), and return the subfield literal for field `name` in (4).
+Next, we desugar the type `T` as a product type in (2), find the subfield payload used in (3), and return the subfield literal for field `name` in (4).
 
 This gives us the following:
 
@@ -527,7 +529,7 @@ val reg_i_b: Reg[UInt] = reg.i.b
 
 The downside is that common Scala collection operations become harder to use.
 Below is an example where using Scala `Seq`'s `reduce` operation results in a type error.
-`c.io.out` has type `IO[UInt]`, the result of `+` has type `Node[UInt]`, and `reduce` expects a function of type `(B, B) => B`, where the input and output types match.
+`c.io.out` has type `IO[UInt]`, the result of `+` has type `Node[UInt]` (wrapper type for operation outputs), and `reduce` expects a function of type `(B, B) => B`, where the input and output types match.
 
 ```scala
 class Fanout(level: Int, fanout: Int) extends Module:
@@ -671,7 +673,7 @@ If you eagerly execute the module body while computing a cache key, you’ve alr
 For cache keys, I hash the classfiles, their dependencies, and module instantiation parameters.
 Dependencies can be approximated by parsing the classfile constant pool (which includes class references used for JVM linking).
 
-The core API looks like this:
+The core API for lazy evaluation looks like this:
 
 ```scala
 /** Registers the module body for lazy elaboration.
@@ -690,15 +692,15 @@ private[hdl] def runBody(): Unit =
 which can be used like this:
 
 ```scala
-class Queue[T <: HWData](x: T, entries: Int) extends Module with CacheableModule:
+class Queue[T <: HWData](x: T, entries: Int) extends Module with CacheableModule: // 1
 
-  type ElabParams = (HWData, Int)  // 1
-  given stableHashElabParams: StableHash[ElabParams] = StableHash.derived // 2
-  def elabParams: ElabParams = (x, entries) // 3
+  type ElabParams = (HWData, Int)  // 2
+  given stableHashElabParams: StableHash[ElabParams] = StableHash.derived // 3
+  def elabParams: ElabParams = (x, entries) // 4
 
   val io = IO(QueueBundle(x))
 
-  body: // 4
+  body: // 5
     val addrBits = log2Ceil(entries + 1)
     val mem = Reg(Vec.fill(entries)(x))
 
@@ -732,8 +734,12 @@ class Queue[T <: HWData](x: T, entries: Int) extends Module with CacheableModule
     }
 ```
 
-(1), (2), (3) provides the elaborator information about the parameters that should be used to generate a hash key for this module.
-(4) is how the `body` API can be used to guard against eager execution.
+(1), (2), (3), (4) provides the elaborator information about the parameters that should be used to generate a hash key for this module.
+(5) is how the `body` API can be used to guard against eager execution.
+
+One thing to note that the caching scheme assumes that the module body is a referentially transparent function.
+It should not contain code that updates external variables.
+For these modules, users should opt-out from this caching scheme by not mixing in the `CacheableModule` trait.
 
 ## Enums
 
@@ -895,7 +901,7 @@ The key idea is that `read`/`write` are methods on a port handle: calling them d
 ```scala
 class SRAM[T <: HWData](x: T, entries: Int)(num_read_ports: Int, num_write_ports: Int, num_readwrite_ports: Int)
 
-val sram = SRAM(UInt(3.W), 4)(num_read_ports: Int, num_write_ports: Int, num_readwrite_ports: Int)
+val sram = SRAM(UInt(3.W), 4)(4, 5, 6)
 
 when (???)
     sram.readport(0).read(addr)
@@ -927,12 +933,11 @@ This style keeps the port counts explicit, avoids “magic” port merging, and 
 To demonstrate that this HDL can build more than just toy examples, I built a simple RISC-V superscalar out-of-order core supporting RV32I[^5].
 
 While doing that, I realized that using `case class` for bundle definitions isn’t much of a burden in practice.
-While working on this, I realized that using `case class`s for bundle definitions isn't too big of a burden to the designer.
 These interfaces evolve slowly, so seldom did I have to redefine entire constructors from scratch.
 Rather, this enables a much tighter LSP integration such as completion, documentation, and goto-definitions.
 
 I also rarely had to sit around waiting for code to compile and elaborate thanks to the new elaboration engine.
-Most of the time was spent on Verilator.
+Most of the time was spent on Verilator compilation.
 
 # Conclusion
 
