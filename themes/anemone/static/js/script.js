@@ -22,9 +22,8 @@ class ThemeManager {
     }
 
     setInitialTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const initialTheme = savedTheme || (systemDark ? 'dark' : 'light');
+        // Force light mode always - ignore system preference and localStorage
+        const initialTheme = 'light';
 
         document.documentElement.setAttribute('data-theme', initialTheme);
         this.updateIcon(initialTheme === 'dark');
