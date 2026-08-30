@@ -6,7 +6,9 @@ title = "Home"
 
 [[Github](https://github.com/joonho3020)]
 
-Hi! I'm a Ph.D. student in Computer Science at UC Berkeley, advised by [krste asanović](https://people.eecs.berkeley.edu/~krste/).
+Hi!
+~~I'm a Ph.D. student in Computer Science at UC Berkeley, advised by [krste asanović](https://people.eecs.berkeley.edu/~krste/)~~.
+I'm part of the [Palladium](https://www.cadence.com/en_US/home/tools/system-design-and-verification/emulation-and-prototyping/palladium.html) architecture team at Cadence.
 I work mainly in computer architecture, focusing on simulation methodology, profiling, microarchitecture, and VLSI.
 Specifically, I'm interested in reducing perturbations during profiling, hardware based RTL emulation, intermediate representations for hardware, and microarchitecture.
 
