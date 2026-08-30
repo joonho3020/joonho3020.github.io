@@ -9,12 +9,12 @@ toc = true
 ## XLS Considered Harmful
 
 Google's ASIC teams look impressive from the outside thanks to their mobile SoCs and TPUs.
-Separately, Google has an internal HLS tool called XLS, which is also open-sourced.
+Separately, Google has an internal HLS tool called [XLS](https://github.com/google/xls), which happens to be open-sourced.
 This post gives a brief overview of what XLS is, the upsides, and its downsides.
 
 ## What is XLS?
 
-XLS is Google’s in-house open-source HLS tool.
+XLS is Google's (now used by OpenAI as well) in-house open-source HLS tool.
 The developers call it "mid-level synthesis", but it is more accurately described as a transactional-level HLS.
 The language consists of three main components: functions, processes, and channels.
 
@@ -159,7 +159,7 @@ Compared to CIRCT which has many [dialects](https://circt.llvm.org/docs/Dialects
 XLS also offers some strong features in terms of generic tooling.
 
 - Inline testbench support is an improvement over writing Verilog testbenches
-- In XLS, the design can be JIT'ed into native code to perform functional simulation, a benefit of the custom compiler approach. The simulator runs fast and allows printf debugging
+- In XLS, the design can be JIT'ed into native code to perform functional simulation, which is a benefit of the custom compiler approach. The simulator runs fast and allows printf debugging
 - Although more of a compliment towards Bazel, tight integration with it enables caching and incremental compilation, providing a tight edit-run-debug loop
 
 ---
@@ -168,13 +168,13 @@ XLS also offers some strong features in terms of generic tooling.
 
 ### Lack of Control Flow Synthesis
 
-The biggest issue, in my view, **is that the abstraction boundary is a mismatch for many of the designs people use HLS for**.
+The biggest issue, in my view, **is that the abstraction provided by XLS is not what hardware designers use HLS for**.
 Traditional HLS[^1] has a clear advantage over RTL because it supports control-flow synthesis.
-Automating this process removes a major burden, since debugging control flow is where hardware designers spend a large portion of their time.
+Automating this process removes a major burden, since debugging control flow is where most of the design verification time is spent.
 
 XLS, however, does not support control-flow synthesis, which is the key selling point of HLS.
-Without it, implementing anything with a nontrivial FSM requires manually instantiating all the hardware state and control logic, rather than expressing the design in an imperative style.
-At that point, writing XLS is not much different from writing RTL.
+Without it, implementing an FSM requires the designer to manually instantiate all the hardware state and control logic, rather than expressing the design in an imperative style.
+At that point, writing XLS is not much different from writing RTL [^4].
 
 The code block below is a GCD module expressed in XLS.
 As one can see, all the necessary state to express the FSM (i.e., GCDState) has been explicitly instantiated by the programmer.
@@ -281,19 +281,19 @@ In summary, in XLS, the compiler is doing all the "easy work" of taking care of 
 ### One Should Trust Synthesis
 
 The major selling point of XLS is its automatic pipelining capabilities.
-It uses a delay estimation model for a particular technology (currently ASAP7) to automatically insert pipeline stages and cut critical paths.
+It uses a delay estimation model for a particular technology (currently [ASAP7](https://github.com/The-OpenROAD-Project/asap7)) to automatically insert pipeline stages and cut critical paths.
 However, pushing pipelining decisions into the frontend can be hard to justify when the downstream flow already performs retiming/physical optimization based on real timing constraints, especially when the frontend delay model diverges from post-synthesis/post-P&R reality.
 
 For latency-insensitive interfaces, queues between ports already introduce extra stages that break up long combinational paths.
-For combinational logic, traditional synthesis tools generally perform superior retiming.
-And since XLS ultimately emits Verilog, the downstream synthesis tool will run retiming on the block anyway.
+For combinational logic, traditional synthesis tools already perform superior retiming.
+And since XLS ultimately emits Verilog, the downstream synthesis tool will run retiming on the blocks anyway.
 
 One may wonder how a compiler can arbitrarily insert pipeline stages without breaking functional correctness.
 This circles back to XLS’s abstraction: module boundaries are latency-insensitive.
 To support frontend retiming, **XLS must restrict the abstractions available to designers, which ultimately harms both productivity and QoR**.
 
-One may argue that XLS can reduce iteration time when fixing critical paths.
-While it's true that quick iteration is possible using the delay model (since it avoids running synthesis) this falls apart as soon as the model is inaccurate.
+One may argue that XLS can reduce the iteration time when fixing critical paths.
+While it's true that quick iteration is possible using the delay model (since it avoids running synthesis), this falls apart as soon as the model is inaccurate.
 In practice, the delay model will never match the accuracy of real synthesis tools, especially now that modern CAD flows perform physical synthesis.
 
 The GitHub issue below illustrates how XLS's frontend QoR (Quality of Results) prediction can lead to problems.
@@ -338,6 +338,8 @@ The automatic pipelining feature is not especially compelling if your downstream
 The ergonomics of the frontend language do not enhance productivity.
 Integration testing in a full SoC context is also challenging because you need to write glue code to integrate the generated Verilog into the SoC, although this issue is common among many HLS tools.
 
+---
+
 ## Addendum
 
 ### 2025/11/13
@@ -370,6 +372,23 @@ One common way to prevent timing abstraction leakage across boundaries is to use
 In many flows, a common convention is to add registers at the end of the combinational logic and rely on downstream synthesis/retiming to handle the remaining timing details.
 Fancy circuit delay modeling or automatic pipelining is not required.
 
+### 2026/08/30
+
+<div style="text-align:center; margin: 1em 0;">
+  <img src="/articles/assets/xls/jalapeno-xls.png" width="900">
+</div>
+
+OpenAI presented its Jalapeño ML inference chip at [Hot Chips](https://hc2026.hotchips.org).
+The lead developer of XLS slipped in a slide promoting the benefits of this HLS wannabe.
+The slide is misleading for several reasons.
+First, careful readers may have noticed that XLS was used only for floating-point units.
+This is what happens when complex control flow is difficult to represent: you end up designing small feed-forward datapaths [^5].
+Second, the headline PPA benefit is not representative because the same FP blocks are instantiated repeatedly throughout an ML accelerator.
+These results say little about the gains one might see when building other kinds of blocks [^6].
+Finally, without details about the human-designed baseline or the effort spent optimizing it, it is impossible to tell whether the comparison demonstrates an advantage of XLS or merely reflects a weaker baseline.
+
+---
+
 ## Citations
 
 - [XLS github issue - premature optimization is the real issue](https://github.com/google/xls/issues/1482)
@@ -380,4 +399,7 @@ Fancy circuit delay modeling or automatic pipelining is not required.
 
 [^1]: Catapult or SystemC.
 [^2]: Technically, backpressure bugs can still happen.
-[^3]: Or perhaps in my unsuccessful attempt to use it
+[^3]: Or perhaps in my unsuccessful attempt to use it.
+[^4]: It may actually be worse than writing RTL, given how unergonomic the language is.
+[^5]: Do you really need a new HDL for such a narrow class of datapaths?
+[^6]: For blocks that do not fit XLS's abstractions well, XLS may produce worse PPA than a carefully optimized RTL implementation.
