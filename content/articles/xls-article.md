@@ -315,7 +315,7 @@ Here is a list of limitations I encountered from a purely software engineering p
 - Modules in XLS are parameterized using type parameters, rather than standard function arguments (e.g., `proc GCD<N: u32>` in the GCD example above). This is unergonomic
 - The compiler does not support automatic bit-width inference, so the programmer must specify the type of each wire explicitly. This requirement makes the code verbose and cumbersome. While some might argue that width inference isn't crucial, those who have used an HDL with width inference (e.g., Chisel) will understand how much easier it is to write code without having to manage these intricate details of the design.
 - They implemented a standard library to handle basic tasks like reading files, which is necessary for writing testbenches. In contrast, if they had used an embedded DSL, handling files containing testbench data would have been much simpler. While this may not impact the end user significantly, it likely required a considerable amount of effort from the engineers
-- Miscellaneous compilation bugs. I encountered issues compiling a `for` statement while trying to create a multi-banked SRAM in my design. It appears that others have faced similar difficulties. For example, in the [XLS ZStd implementation](https://github.com/antmicro/xls/blob/76e650ac9030757a9960045931007a56311a1fca/xls/modules/zstd/sequence_executor.x#L1337), the programmer had to hand-unroll the SRAM banks because the `for` statement was broken (this example also highlights how verbose the code becomes due to the lack of type inference)
+- Miscellaneous compilation bugs. I encountered issues compiling a `for` statement while trying to create a [multi-banked SRAM in my design](https://github.com/joonho3020/xls-private/blob/92c03831f1ba0f36996b87c4c529d13f4317017d/xls/modules/snappy/command_executer.x#L140). It appears that others have faced similar difficulties. For example, in the [XLS ZStd implementation](https://github.com/antmicro/xls/blob/76e650ac9030757a9960045931007a56311a1fca/xls/modules/zstd/sequence_executor.x#L1337), the programmer had to hand-unroll the SRAM banks because the `for` statement was broken (this example also highlights how verbose the code becomes due to the lack of type inference)
 
 The XLS team would have had an easier time with an embedded DSL approach, as it would provide many benefits: generic type inference, fewer compiler bugs, build tools, and access to existing software libraries.
 
@@ -394,6 +394,7 @@ Finally, without details about the human-designed baseline or the effort spent o
 - [XLS github issue - premature optimization is the real issue](https://github.com/google/xls/issues/1482)
 - [XLS ZStd implementation](https://github.com/antmicro/xls/blob/76e650ac9030757a9960045931007a56311a1fca/xls/modules/zstd/sequence_executor.x#L1337)
 - [Hacker News article](https://news.ycombinator.com/item?id=24354083)
+- [XLS Snappy decompressor implementation](https://github.com/joonho3020/xls-private/tree/joonho-main/xls/modules/snappy)
 
 ---
 
