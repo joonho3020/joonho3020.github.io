@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block head %}
+{% block extra_head %}
 {{ super() }}
 {% include "partials/schema-article.html" %}
 {% endblock %}
 
-{% macro render_toc(headers, level) %}
+{% component article.render_toc(headers, level) %}
     {% for header in headers %}
     <li class="toc-item toc-h{{ level }}">
         <a href="{{ header.permalink | safe }}" data-id="{{ header.id }}">{{ header.title }}</a>
         {% if header.children %}
         <ul class="toc-sublist">
-            {{ self::render_toc(headers=header.children, level=level + 1) }}
+            {{<article.render_toc headers={header.children} level={level + 1} />}}
         </ul>
         {% endif %}
     </li>
     {% endfor %}
-{% endmacro %}
+{% endcomponent article.render_toc %}
 
 {% block content %}
 {% if page.extra.toc and page.toc %}
@@ -26,7 +26,7 @@
         <nav class="toc-nav" aria-label="Table of Contents">
             <h2 class="toc-title">Contents</h2>
             <ul class="toc-list">
-                {{ self::render_toc(headers=page.toc, level=1) }}
+                {{<article.render_toc headers={page.toc} level={1} />}}
             </ul>
         </nav>
     </aside>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{% if page %}{{ page.lang }}{% else %}{{ config.default_language }}{% endif %}">
+<html lang="{% if page is defined %}{{ page.lang }}{% else %}{{ config.default_language }}{% endif %}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
         {% block rss %}
         <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path="rss.xml", trailing_slash=false) }}">
         {% endblock %}
-        <title>{{ config.title }}{% if page.title %} | {{ page.title }}{% endif %}</title>
+        <title>{{ config.title }}{% if page is defined and page.title %} | {{ page.title }}{% endif %}</title>
 
         <link rel="preload" href="{{ get_url(path='css/style.css') }}" as="style">
         <link rel="stylesheet" href="https://raw.githack.com/Speyll/suCSS/main/reset-min.css" crossorigin="anonymous">
@@ -21,9 +21,9 @@
     </head>
     <body>
         {% set current_lang = config.default_language %}
-        {% if page %}
+        {% if page is defined %}
         {% set current_lang = page.lang %}
-        {% elif section %}
+        {% elif section is defined %}
         {% set current_lang = section.lang %}
         {% endif %}
         <nav id="nav-bar">

@@ -14,7 +14,7 @@
     </ul>
     {% endif %}
 
-    {% if paginator %}
+    {% if paginator is defined %}
         {% include "partials/pagination.html" %}
     {% endif %}
 {% endblock %}
