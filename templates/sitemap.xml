@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% set root = get_section(path="_index.md") %}
+    {% for page in root.pages %}
+    <url>
+        <loc>{{ page.permalink | safe }}</loc>
+        {% if page.updated %}<lastmod>{{ page.updated | date(format="%Y-%m-%d") }}</lastmod>{% elif page.date %}<lastmod>{{ page.date | date(format="%Y-%m-%d") }}</lastmod>{% endif %}
+    </url>
+    {% endfor %}
+</urlset>

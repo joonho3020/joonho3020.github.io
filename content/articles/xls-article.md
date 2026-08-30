@@ -1,9 +1,13 @@
 +++
 title = "XLS Considered Harmful"
 date = "2024-08-24"
+updated = "2026-08-30"
+description = "A hardware designer's critique of Google's XLS high-level synthesis tool: where its IR and tooling shine, and where its abstractions, pipelining, and DSL fall short."
 
 [extra]
 toc = true
+seo_title = "Google XLS Considered Harmful: An HLS Critique"
+social_image = "/articles/assets/xls/jalapeno-xls.png"
 +++
 
 ## XLS Considered Harmful

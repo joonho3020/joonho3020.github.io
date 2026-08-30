@@ -5,7 +5,7 @@ build_search_index = true
 
 # Site metadata
 title = "Joonho Whangbo"
-# description = "Ph.D. student in Computer Science at UC Berkeley"
+description = "Joonho Whangbo's writing on computer architecture, hardware design, RTL simulation, FPGAs, and high-level synthesis."
 
 theme = "anemone"
 
@@ -25,6 +25,7 @@ theme = "github-light"
 # taxonomies = [ { name = "tags" } ]
 
 [extra]
+author = "Joonho Whangbo"
 # List articles on the homepage via theme support
 list_pages = true
 # Optional: show author on posts
